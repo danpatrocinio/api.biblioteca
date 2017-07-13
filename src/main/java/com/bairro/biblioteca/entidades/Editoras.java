@@ -8,25 +8,25 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "autores")
-public class Autores {
+@Table(name = "editoras")
+public class Editoras {
 
 	@Id
-	@Column(name = "id_autor")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer idAutor;
+	@Column(name = "id_editora")
+	private Integer idEditora;
 	private String nome;
 
-	public Integer getIdAutor() {
-		return idAutor;
+	public Integer getIdEditora() {
+		return idEditora;
 	}
 
 	public String getNome() {
 		return nome;
 	}
 
-	public void setIdAutor(Integer idAutor) {
-		this.idAutor = idAutor;
+	public void setIdEditora(Integer idEditora) {
+		this.idEditora = idEditora;
 	}
 
 	public void setNome(String nome) {

@@ -19,13 +19,16 @@ public class Livros {
 	@Column(name = "data_lancamento")
 	private Date dataLancamento;
 	private String edicao;
+	@Column(name = "id_autor")
+	private Integer idAutor;
+	@Column(name = "id_editora")
+	private Integer idEditora;
+	@Column(name = "id_genero")
+	private Integer idGenero;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_livro")
 	private Integer idLivro;
-	private Integer idAutor;
-	private Integer idGenero;
-	private Integer idEditora;
 	private String titulo;
 
 	public Date getDataLancamento() {
@@ -36,32 +39,20 @@ public class Livros {
 		return edicao;
 	}
 
-	public Integer getIdLivro() {
-		return idLivro;
-	}
-
 	public Integer getIdAutor() {
 		return idAutor;
-	}
-
-	public void setIdAutor(Integer idAutor) {
-		this.idAutor = idAutor;
-	}
-	
-	public Integer getIdGenero() {
-		return idGenero;
-	}
-
-	public void setIdGenero(Integer idGenero) {
-		this.idGenero = idGenero;
 	}
 
 	public Integer getIdEditora() {
 		return idEditora;
 	}
 
-	public void setIdEditora(Integer idEditora) {
-		this.idEditora = idEditora;
+	public Integer getIdGenero() {
+		return idGenero;
+	}
+
+	public Integer getIdLivro() {
+		return idLivro;
 	}
 
 	public String getTitulo() {
@@ -74,6 +65,18 @@ public class Livros {
 
 	public void setEdicao(String edicao) {
 		this.edicao = edicao;
+	}
+
+	public void setIdAutor(Integer idAutor) {
+		this.idAutor = idAutor;
+	}
+
+	public void setIdEditora(Integer idEditora) {
+		this.idEditora = idEditora;
+	}
+
+	public void setIdGenero(Integer idGenero) {
+		this.idGenero = idGenero;
 	}
 
 	public void setIdLivro(Integer idLivro) {

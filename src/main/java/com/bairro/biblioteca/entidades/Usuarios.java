@@ -12,8 +12,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "funcionarios")
-public class Funcionarios {
+@Table(name = "usuarios")
+public class Usuarios {
 
 	private String celular;
 	private String cpf;
@@ -22,12 +22,10 @@ public class Funcionarios {
 	private Date dataNascimento;
 	private String email;
 	private String endereco;
-	@Column(name = "id_cargo")
-	private Integer idCargo;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_funcionario")
-	private Integer idFuncionario;
+	@Column(name = "id_usuario")
+	private Integer idUsuario;
 	private String nome;
 	private String rg;
 	private String sexo;
@@ -53,12 +51,8 @@ public class Funcionarios {
 		return endereco;
 	}
 
-	public Integer getIdCargo() {
-		return idCargo;
-	}
-
-	public Integer getIdFuncionario() {
-		return idFuncionario;
+	public Integer getIdUsuario() {
+		return idUsuario;
 	}
 
 	public String getNome() {
@@ -97,12 +91,8 @@ public class Funcionarios {
 		this.endereco = endereco;
 	}
 
-	public void setIdCargo(Integer idCargo) {
-		this.idCargo = idCargo;
-	}
-
-	public void setIdFuncionario(Integer idFuncionario) {
-		this.idFuncionario = idFuncionario;
+	public void setIdUsuario(Integer idUsuario) {
+		this.idUsuario = idUsuario;
 	}
 
 	public void setNome(String nome) {

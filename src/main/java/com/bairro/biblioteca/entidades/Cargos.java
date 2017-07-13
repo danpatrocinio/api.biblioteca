@@ -8,29 +8,38 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "generos")
-public class Generos {
+@Table(name = "cargos")
+public class Cargos {
 
+	private String atribuicoes;
 	private String descricao;
 	@Id
-	@Column(name = "id_genero")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer idGenero;
+	@Column(name = "id_cargo")
+	private Integer idCargo;
+
+	public String getAtribuicoes() {
+		return atribuicoes;
+	}
 
 	public String getDescricao() {
 		return descricao;
 	}
 
-	public Integer getIdGenero() {
-		return idGenero;
+	public Integer getIdCargo() {
+		return idCargo;
+	}
+
+	public void setAtribuicoes(String atribuicoes) {
+		this.atribuicoes = atribuicoes;
 	}
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
 
-	public void setIdGenero(Integer idGenero) {
-		this.idGenero = idGenero;
+	public void setIdCargo(Integer idCargo) {
+		this.idCargo = idCargo;
 	}
 
 }
