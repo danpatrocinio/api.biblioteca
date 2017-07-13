@@ -23,4 +23,14 @@ public class AutoresDAO {
 		return autor;
 	}
 	
+	public Autores buscarPorId(Integer idAutor) {
+		return manager.find(Autores.class, idAutor);
+	}
+	
+	public void deletar(Integer idAutor) {
+		Autores autor = manager.find(Autores.class, idAutor);
+		if (autor != null) {
+			manager.remove(autor);
+		}
+	}
 }

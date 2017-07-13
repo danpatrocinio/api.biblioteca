@@ -42,5 +42,17 @@ public class LivrosDAO {
 	public List<Livros> buscarPorPropriedade(String whereClause, Object parametro) {
 		return manager.createQuery("select l from Livros l " + whereClause + parametro, Livros.class).getResultList();
 	}
+
+	public boolean existeComPropriedade(String whereClause, Object parametro) {
+		Livros encontrado = manager
+				.createQuery("select l from Livros l " 
+					+ whereClause + parametro
+					,Livros.class)
+				.getSingleResult();
+		if (encontrado != null) {
+			return true;
+		}
+		return false;
+	}
 	
 }

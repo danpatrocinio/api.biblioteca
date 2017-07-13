@@ -32,8 +32,12 @@ public class LivrosResources {
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Livros buscarPorId(@PathParam("id") Integer idLivro) {
-		return dao.buscarPorId(idLivro);
+	public Response buscarPorId(@PathParam("id") Integer idLivro) {
+		Livros livro = dao.buscarPorId(idLivro);
+		if (livro == null) {
+			return Response.ok("Livro " + idLivro + " não encontrado!").status(204).build();
+		}
+		return Response.ok(livro).build();
 	}
 
 	@PUT
