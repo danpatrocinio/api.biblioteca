@@ -19,10 +19,12 @@ public class FuncionariosDAO {
 		        .getResultList();
 	}
 
-	public void deletar(Integer idFuncionario) {
+	public void deletar(Integer idFuncionario) throws Exception {
 		Funcionarios funcionario = getById(idFuncionario);
 		if (funcionario != null) {
 			manager.remove(funcionario);
+		} else {
+			throw new Exception("Funcionário não encontrado!");
 		}
 	}
 

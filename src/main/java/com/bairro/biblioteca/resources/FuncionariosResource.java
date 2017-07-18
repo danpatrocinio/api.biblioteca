@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -21,6 +22,17 @@ public class FuncionariosResource {
 	@Inject
 	private FuncionariosDAO dao;
 
+	@DELETE
+	@Path("/{id}")
+	public Response deletar(@PathParam("id") Integer idFuncionario) {
+		try {
+			dao.deletar(idFuncionario);
+			return Response.ok("Funcionário deletado com sucesso!").build();
+		} catch (Exception e) {
+			return Response.ok("Erro ao deletar funcionário: " + e.getMessage()).build();
+		}
+	}
+
 	@GET
 	@Path("/cargo/{id_cargo}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -35,4 +47,5 @@ public class FuncionariosResource {
 		Funcionarios funcionarioSalvo = dao.salvar(funcionario);
 		return Response.ok(funcionarioSalvo).status(201).build();
 	}
+
 }
