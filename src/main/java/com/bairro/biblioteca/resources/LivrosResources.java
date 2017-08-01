@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response;
 import com.bairro.biblioteca.daos.LivrosDAO;
 import com.bairro.biblioteca.entidades.Livros;
 import com.bairro.biblioteca.exceptions.ModelException;
+import com.bairro.biblioteca.utils.ResultWrapper;
 
 @Path("/livros")
 public class LivrosResources {
@@ -35,12 +36,12 @@ public class LivrosResources {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response buscarPorId(@PathParam("id") Integer idLivro) {
-
 		try {
 			Livros livro = dao.buscarPorId(idLivro);
 			return Response.ok(livro).build();
 		} catch (ModelException e) {
-			return Response.ok(e.getMessage()).status(204).build();
+			ResultWrapper resultado = new ResultWrapper(e.getMessage());
+			return Response.ok(resultado).status(200).build();
 		}
 	}
 
@@ -53,8 +54,13 @@ public class LivrosResources {
 	@DELETE
 	@Path("/{id}")
 	public Response deletar(@PathParam("id") Integer idLivro) {
-		dao.deletar(idLivro);
-		return Response.ok("Livro removido com sucesso!").build();
+		try {
+			dao.deletar(idLivro);
+			return Response.ok("Livro removido com sucesso!").build();
+		} catch (ModelException e) {
+			ResultWrapper resultado = new ResultWrapper(e.getMessage());
+			return Response.ok(resultado).status(404).build();
+		}
 	}
 
 	@GET

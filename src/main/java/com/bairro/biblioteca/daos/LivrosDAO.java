@@ -36,8 +36,8 @@ public class LivrosDAO {
 		return manager.createQuery("select l from Livros l", Livros.class).getResultList();
 	}
 
-	public void deletar(Integer idLivro) {
-		Livros livro = manager.find(Livros.class, idLivro);
+	public void deletar(Integer idLivro) throws ModelException {
+		Livros livro = buscarPorId(idLivro);
 		if (livro != null) {
 			manager.remove(livro);
 		}
