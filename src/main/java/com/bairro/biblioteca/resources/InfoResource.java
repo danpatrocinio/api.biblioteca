@@ -11,7 +11,7 @@ public class InfoResource {
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	public String info() {
-		return "Biblioteca API está rodando...";
+		return "Biblioteca API estah rodando... :)";
 	}
 
 }

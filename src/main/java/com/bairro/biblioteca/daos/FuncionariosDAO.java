@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.bairro.biblioteca.entidades.Funcionarios;
+import com.bairro.biblioteca.exceptions.ModelException;
 
 @Stateless
 public class FuncionariosDAO {
@@ -19,12 +20,12 @@ public class FuncionariosDAO {
 		        .getResultList();
 	}
 
-	public void deletar(Integer idFuncionario) throws Exception {
+	public void deletar(Integer idFuncionario) throws ModelException {
 		Funcionarios funcionario = getById(idFuncionario);
 		if (funcionario != null) {
 			manager.remove(funcionario);
 		} else {
-			throw new Exception("Funcionário não encontrado!");
+			throw new ModelException("Funcionário não encontrado!");
 		}
 	}
 

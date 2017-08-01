@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.bairro.biblioteca.entidades.Livros;
+import com.bairro.biblioteca.exceptions.ModelException;
 
 @Stateless
 public class LivrosDAO {
@@ -19,8 +20,12 @@ public class LivrosDAO {
 		return livro;
 	}
 
-	public Livros buscarPorId(Integer idLivro) {
-		return manager.find(Livros.class, idLivro);
+	public Livros buscarPorId(Integer idLivro) throws ModelException {
+		Livros livro = manager.find(Livros.class, idLivro);
+		if (livro == null) {
+			throw new ModelException("Livro " + idLivro + " não encontrado!");
+		}
+		return livro;
 	}
 
 	public List<Livros> buscarPorPropriedade(String whereClause, Object parametro) {

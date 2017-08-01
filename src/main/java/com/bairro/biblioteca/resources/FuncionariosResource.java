@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response;
 
 import com.bairro.biblioteca.daos.FuncionariosDAO;
 import com.bairro.biblioteca.entidades.Funcionarios;
+import com.bairro.biblioteca.exceptions.ModelException;
 
 @Path("/funcionarios")
 public class FuncionariosResource {
@@ -28,7 +29,7 @@ public class FuncionariosResource {
 		try {
 			dao.deletar(idFuncionario);
 			return Response.ok("Funcionário deletado com sucesso!").build();
-		} catch (Exception e) {
+		} catch (ModelException e) {
 			return Response.ok("Erro ao deletar funcionário: " + e.getMessage()).build();
 		}
 	}

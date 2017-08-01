@@ -16,29 +16,13 @@ import javax.ws.rs.core.Response;
 
 import com.bairro.biblioteca.daos.LivrosDAO;
 import com.bairro.biblioteca.entidades.Livros;
+import com.bairro.biblioteca.exceptions.ModelException;
 
 @Path("/livros")
 public class LivrosResources {
 
 	@Inject
 	private LivrosDAO dao;
-	
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<Livros> buscarTodos() {
-		return dao.buscarTodos();
-	}
-	
-	@GET
-	@Path("/{id}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response buscarPorId(@PathParam("id") Integer idLivro) {
-		Livros livro = dao.buscarPorId(idLivro);
-		if (livro == null) {
-			return Response.ok("Livro " + idLivro + " não encontrado!").status(204).build();
-		}
-		return Response.ok(livro).build();
-	}
 
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -47,18 +31,30 @@ public class LivrosResources {
 		return dao.atualizar(livro);
 	}
 
+	@GET
+	@Path("/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response buscarPorId(@PathParam("id") Integer idLivro) {
+
+		try {
+			Livros livro = dao.buscarPorId(idLivro);
+			return Response.ok(livro).build();
+		} catch (ModelException e) {
+			return Response.ok(e.getMessage()).status(204).build();
+		}
+	}
+
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Livros> buscarTodos() {
+		return dao.buscarTodos();
+	}
+
 	@DELETE
 	@Path("/{id}")
 	public Response deletar(@PathParam("id") Integer idLivro) {
 		dao.deletar(idLivro);
 		return Response.ok("Livro removido com sucesso!").build();
-	}
-
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Livros salvar(Livros livro) {
-		return dao.salvar(livro);
 	}
 
 	@GET
@@ -69,17 +65,24 @@ public class LivrosResources {
 	}
 
 	@GET
+	@Path("/editora/{idEditora}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Livros> findByEditora(@PathParam("idEditora") Integer idEditora) {
+		return dao.buscarPorPropriedade("WHERE l.idEditora = ", idEditora);
+	}
+
+	@GET
 	@Path("/genero/{idGenero}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Livros> findByGenero(@PathParam("idGenero") Integer idGenero) {
 		return dao.buscarPorPropriedade("WHERE l.idGenero = ", idGenero);
 	}
 
-	@GET
-	@Path("/editora/{idEditora}")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Livros> findByEditora(@PathParam("idEditora") Integer idEditora) {
-		return dao.buscarPorPropriedade("WHERE l.idEditora = ", idEditora);
+	public Livros salvar(Livros livro) {
+		return dao.salvar(livro);
 	}
 
 }
