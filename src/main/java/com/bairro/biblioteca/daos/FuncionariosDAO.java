@@ -25,7 +25,7 @@ public class FuncionariosDAO {
 		if (funcionario != null) {
 			manager.remove(funcionario);
 		} else {
-			throw new ModelException("Funcionário não encontrado!");
+			throw new ModelException("Funcionï¿½rio nï¿½o encontrado!");
 		}
 	}
 
@@ -33,8 +33,12 @@ public class FuncionariosDAO {
 		return manager.createQuery("select f from Funcionarios f", Funcionarios.class).getResultList();
 	}
 
-	public Funcionarios getById(Integer idFuncionario) {
-		return manager.find(Funcionarios.class, idFuncionario);
+	public Funcionarios getById(Integer idFuncionario) throws ModelException {
+		Funcionarios funcionario = manager.find(Funcionarios.class, idFuncionario);
+		if (funcionario == null) {
+			throw new ModelException("FuncionÃ¡rio nÃ£o encontrado!");
+		}
+		return funcionario;
 	}
 
 	public Funcionarios salvar(Funcionarios funcionario) {

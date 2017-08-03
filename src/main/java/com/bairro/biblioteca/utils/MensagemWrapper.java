@@ -1,10 +1,10 @@
 package com.bairro.biblioteca.utils;
 
-public class ResultWrapper {
+public class MensagemWrapper {
 
 	private String mensagem;
 	
-	public ResultWrapper(String mensagem) {
+	public MensagemWrapper(String mensagem) {
 		this.mensagem = mensagem;
 	}
 
