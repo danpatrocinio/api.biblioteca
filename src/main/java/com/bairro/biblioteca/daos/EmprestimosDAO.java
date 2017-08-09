@@ -23,8 +23,14 @@ public class EmprestimosDAO {
 	@Inject
 	private FuncionariosDAO funcionariosDao;
 
+	@Inject
+	private LivrosDAO livrosDao;
+
 	@PersistenceContext(unitName = "bibliotecaDS")
 	private EntityManager manager;
+
+	@Inject
+	private UsuariosDAO usuarioDao;
 
 	public Emprestimos atualizar(Emprestimos emprestimo) throws ModelException {
 		buscarPorId(emprestimo.getIdEmprestimo()); // somente para validar se exite no banco, caso não exista dispara uma exception
@@ -44,6 +50,12 @@ public class EmprestimosDAO {
 	public List<Emprestimos> buscarPorLivro(Integer idLivro) {
 		return manager.createQuery("select e from Emprestimos e WHERE e.idLivro1 = " + idLivro + " or e.idLivro2 = "
 		        + idLivro + " or e.idLivro3 = " + idLivro, Emprestimos.class).getResultList();
+	}
+
+	public List<Emprestimos> buscarPorPriedade(String where, Object parametro) {
+		//select e from Emprestimos e WHERE ?<campo que eu quero filtrar>? = ?<parametro>?
+		return manager.createQuery("select e from Emprestimos e " + where + parametro, Emprestimos.class)
+		        .getResultList();
 	}
 
 	public List<Emprestimos> buscarPorPropriedade(String whereClause, Object parametro) {
@@ -68,9 +80,11 @@ public class EmprestimosDAO {
 	}
 
 	public Emprestimos salvar(Emprestimos emprestimo) throws ModelException {
-		if (emprestimo.getIdFuncionario() == null) {
+
+		if (emprestimo.getIdFuncionario() == null || funcionariosDao.getById(emprestimo.getIdFuncionario()) == null) {
 			throw new ModelException("O funcionário não foi informado!");
 		}
+
 		Funcionarios funcionarioEmprestimo = funcionariosDao.getById(emprestimo.getIdFuncionario());
 		Cargos cargo = cargosDao.buscarPorId(funcionarioEmprestimo.getIdCargo());
 		if (!"DB".contains(cargo.getTipo())) {
@@ -81,6 +95,9 @@ public class EmprestimosDAO {
 		}
 		if (emprestimo.getDataEmprestimo() == null) {
 			throw new ModelException("A data de empréstimo não foi infomarda!");
+		}
+		if (emprestimo.getIdUsuario() == null || usuarioDao.buscarPorId(emprestimo.getIdUsuario()) == null) {
+			throw new ModelException("O usuário não foi informado!");
 		}
 		// Calculo do prazo para devolução
 		int prazoEmDias = 0;
@@ -93,9 +110,11 @@ public class EmprestimosDAO {
 		if (emprestimo.getIdLivro3() != null) {
 			prazoEmDias = prazoEmDias + 10;
 		}
+
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(emprestimo.getDataEmprestimo());
 		cal.set(Calendar.DATE, cal.get(Calendar.DATE) + 1);
+
 		Date dateEmprestimoAjustada = new Date(cal.getTimeInMillis());
 		emprestimo.setDataEmprestimo(dateEmprestimoAjustada); // para gravar corretamente esta sendo necessario somar + 1 ao dia.
 
@@ -106,4 +125,5 @@ public class EmprestimosDAO {
 		manager.persist(emprestimo);
 		return emprestimo;
 	}
+
 }

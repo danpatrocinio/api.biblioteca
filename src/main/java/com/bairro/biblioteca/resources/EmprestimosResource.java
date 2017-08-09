@@ -25,14 +25,6 @@ import com.bairro.biblioteca.utils.MensagemWrapper;
 @Path("/emprestimos")
 public class EmprestimosResource {
 
-	/*
-	8.11. Ao cadastrar um empréstimo é obrigatório informar: usuário, funcionário, no mínimo 01 e no máximo 03 livros; data de empréstimo.
-	8.12. Ao cadastrar um empréstimo a API deve calcular a data de previsão de devolução do empréstimo com 10 dias para cada livro. 
-	     (ex. Ao emprestar dois livros 2*10=20 dias de prazo para devolver os dois).
-	8.13. Permitir atualizar o empréstimo inserindo a informação da data de devolução do(s) livro(s) do empréstimo.
-	8.14. Ao informar a data de devolução em atraso em relação a data de previsão da devolução a API deve calcular uma multa pelo atraso de 5 reais + 2 reais por dia de atraso.
-	 */
-
 	@Inject
 	private EmprestimosDAO dao;
 
@@ -80,23 +72,22 @@ public class EmprestimosResource {
 	}
 
 	@GET
-	@Path("/data_devolucao/{dataDevolucao}")
+	@Path("/data_devolucao/{dataLong}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Emprestimos> getByDataDevolucao(@PathParam("dataDevolucao") Long dataDevolucao) {
+	public List<Emprestimos> getByDataDevolucao(@PathParam("dataLong") Long dataDev) {
 		SimpleDateFormat formatador = new SimpleDateFormat("yyyy-MM-dd");
-		Date data = new Date(dataDevolucao);
-		String dataFormatada = "'" + formatador.format(data) + "'";
-		return dao.buscarPorPropriedade("WHERE e.dataDevolucao = ", dataFormatada);
+		Date dataDevolucao = new Date(dataDev);
+		String dataFormatada = "'" + formatador.format(dataDevolucao) + "'";
+		return dao.buscarPorPriedade("WHERE e.dataDevolucao = ", dataFormatada);
 	}
 
-	@GET
-	@Path("/data_emprestimo/{dataEmprestimo}")
+	@Path("/data_emprestimo/{dataLong}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Emprestimos> getByDataEmprestimo(@PathParam("dataEmprestimo") Long dataEmprestimo) {
+	public List<Emprestimos> getByDataEmprestimo(@PathParam("dataLong") Long dataEmprestimo) {
 		SimpleDateFormat formatador = new SimpleDateFormat("yyyy-MM-dd");
-		Date data = new Date(dataEmprestimo);
-		String dataFormatada = "'" + formatador.format(data) + "'";
-		return dao.buscarPorPropriedade("WHERE e.dataEmprestimo = ", dataFormatada);
+		Date dataEmp = new Date(dataEmprestimo);
+		String dataFormatada = "'" + formatador.format(dataEmp) + "'";
+		return dao.buscarPorPriedade("WHERE e.dataEmprestimo = ", dataFormatada);
 	}
 
 	@GET

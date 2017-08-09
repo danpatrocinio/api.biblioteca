@@ -23,14 +23,20 @@ public class FuncionariosResource {
 	@Inject
 	private FuncionariosDAO dao;
 
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Funcionarios> getAll(){
+		return dao.getAll();
+	}
+
 	@DELETE
 	@Path("/{id}")
 	public Response deletar(@PathParam("id") Integer idFuncionario) {
 		try {
 			dao.deletar(idFuncionario);
-			return Response.ok("Funcionário deletado com sucesso!").build();
+			return Response.ok("Funcionï¿½rio deletado com sucesso!").build();
 		} catch (ModelException e) {
-			return Response.ok("Erro ao deletar funcionário: " + e.getMessage()).build();
+			return Response.ok("Erro ao deletar funcionï¿½rio: " + e.getMessage()).build();
 		}
 	}
 
