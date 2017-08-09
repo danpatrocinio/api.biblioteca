@@ -112,11 +112,11 @@ public class EmprestimosDAO {
 
 	public Emprestimos salvar(Emprestimos emprestimo) throws ModelException {
 
-		validaFuncionarioInformado(emprestimo);
+		validaFuncionarioInformado(emprestimo.getIdFuncionario());
 
-		validaLivrosInformados(emprestimo);
+		validaLivrosInformados(emprestimo.getIdLivro1(), emprestimo.getIdLivro2(), emprestimo.getIdLivro3());
 
-		validaUsuarioInformado(emprestimo);
+		validaUsuarioInformado(emprestimo.getIdUsuario());
 
 		if (emprestimo.getDataEmprestimo() == null) {
 			throw new ModelException("A data de empréstimo não foi informada!");
@@ -124,16 +124,14 @@ public class EmprestimosDAO {
 
 		// Ajustar data de emprestimo;
 		Calendar cal = Calendar.getInstance();
-		cal.setTime(emprestimo.getDataEmprestimo());
-		cal.set(Calendar.DATE, cal.get(Calendar.DATE) + 1);
+		cal.setTime(emprestimo.getDataEmprestimo()); // converte para o calendário para poder realizar operações em dia, mês ou ano.
+		cal.set(Calendar.DATE, cal.get(Calendar.DATE) + 1); // para gravar corretamente esta sendo necessario somar + 1 ao dia.
+		Date dateEmprestimoAjustada = new Date(cal.getTimeInMillis()); // converte para java.util.Date para gravar no banco.
+		emprestimo.setDataEmprestimo(dateEmprestimoAjustada);
 
-		int prazoEmDias = calculoPrazoDevolucao(emprestimo);
-
-		Date dateEmprestimoAjustada = new Date(cal.getTimeInMillis());
-		emprestimo.setDataEmprestimo(dateEmprestimoAjustada); // para gravar corretamente esta sendo necessario somar + 1 ao dia.
-
-		cal.set(Calendar.DATE, cal.get(Calendar.DATE) + 1 + prazoEmDias);
-		Date datePrevisaoDevolucao = new Date(cal.getTimeInMillis());
+		int prazoEmDias = calculaPrazoParaDevolucao(emprestimo);
+		cal.set(Calendar.DATE, cal.get(Calendar.DATE) + 1 + prazoEmDias); // para gravar corretamente esta sendo necessario somar + 1 ao dia.
+		Date datePrevisaoDevolucao = new Date(cal.getTimeInMillis());// converte para java.util.Date para gravar no banco.
 		emprestimo.setDataPrevisaoDevolucao(datePrevisaoDevolucao);
 
 		manager.persist(emprestimo);
@@ -146,7 +144,7 @@ public class EmprestimosDAO {
 	 * @param emprestimo
 	 * @return
 	 */
-	private int calculoPrazoDevolucao(Emprestimos emprestimo) {
+	private int calculaPrazoParaDevolucao(Emprestimos emprestimo) {
 		int prazoEmDias = 0;
 		if (emprestimo.getIdLivro1() != null) {
 			prazoEmDias = prazoEmDias + 10;
@@ -161,18 +159,18 @@ public class EmprestimosDAO {
 	}
 
 	/**
-	 * Valida o funcionário informado, caso não seja válido ou n�o esteja informado dispara uma
-	 * exception interrompendo o processo.
+	 * Valida o funcionário informado no empréstimo, caso não seja válido (Diretor ou Bibliotecário)
+	 * ou não esteja informado dispara uma exception interrompendo o processo.
 	 * 
 	 * @param emprestimo
 	 * @throws ModelException
 	 */
-	private void validaFuncionarioInformado(Emprestimos emprestimo) throws ModelException {
-		if (emprestimo.getIdFuncionario() == null || funcionariosDao.getById(emprestimo.getIdFuncionario()) == null) {
+	private void validaFuncionarioInformado(Integer idFuncionario) throws ModelException {
+		if (idFuncionario == null) {
 			throw new ModelException("O funcionário não foi informado!");
 		}
-		Funcionarios funcionarioEmprestimo = funcionariosDao.getById(emprestimo.getIdFuncionario());
-		Cargos cargo = cargosDao.buscarPorId(funcionarioEmprestimo.getIdCargo());
+		Funcionarios funcionarioDoEmprestimo = funcionariosDao.getById(idFuncionario);
+		Cargos cargo = cargosDao.buscarPorId(funcionarioDoEmprestimo.getIdCargo());
 		if (!TipoDeCargo.DIRETOR.getLetra().equals(cargo.getTipo())) {
 			if (!TipoDeCargo.BIBLIOTECARIO.getLetra().equals(cargo.getTipo())) {
 				throw new ModelException("Este funcionário não esta autorizado a efetuar empréstimos!");
@@ -181,24 +179,24 @@ public class EmprestimosDAO {
 	}
 
 	/**
-	 * Valida os livros informados, caso não esteja informado pelo menos 01 ou seja informado um
+	 * Valida os livros informados, caso não esteja informado pelo menos 01 ou se for informado um
 	 * código de livro não cadastrado dispara uma exception interromendo o processo.
 	 * 
 	 * @param emprestimo
 	 * @throws ModelException
 	 */
-	private void validaLivrosInformados(Emprestimos emprestimo) throws ModelException {
-		if (emprestimo.getIdLivro1() == null && emprestimo.getIdLivro2() == null && emprestimo.getIdLivro3() == null) {
+	private void validaLivrosInformados(Integer idLivro1, Integer idLivro2, Integer idLivro3) throws ModelException {
+		if (idLivro1 == null && idLivro2 == null && idLivro3 == null) {
 			throw new ModelException("Nenhum livro foi infomardo!");
 		}
-		if (emprestimo.getIdLivro1() != null) {
-			livrosDao.buscarPorId(emprestimo.getIdLivro1());
+		if (idLivro1 != null) {
+			livrosDao.buscarPorId(idLivro1);
 		}
-		if (emprestimo.getIdLivro2() != null) {
-			livrosDao.buscarPorId(emprestimo.getIdLivro2());
+		if (idLivro2 != null) {
+			livrosDao.buscarPorId(idLivro2);
 		}
-		if (emprestimo.getIdLivro3() != null) {
-			livrosDao.buscarPorId(emprestimo.getIdLivro3());
+		if (idLivro3 != null) {
+			livrosDao.buscarPorId(idLivro3);
 		}
 	}
 
@@ -208,10 +206,10 @@ public class EmprestimosDAO {
 	 * @param emprestimo
 	 * @throws ModelException
 	 */
-	private void validaUsuarioInformado(Emprestimos emprestimo) throws ModelException {
-		if (emprestimo.getIdUsuario() == null) {
+	private void validaUsuarioInformado(Integer idUsuario) throws ModelException {
+		if (idUsuario == null) {
 			throw new ModelException("O usuário não foi informado!");
 		}
-		usuarioDao.buscarPorId(emprestimo.getIdUsuario()); // caso não encontre uma exception será disparada pelo método buscarPorId de usuarioDao.
+		usuarioDao.buscarPorId(idUsuario); // caso não encontre uma exception será disparada pelo método buscarPorId de usuarioDao.
 	}
 }
