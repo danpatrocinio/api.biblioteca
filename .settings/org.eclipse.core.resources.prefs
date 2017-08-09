@@ -1,5 +1,7 @@
 eclipse.preferences.version=1
 encoding//src/main/java/com/bairro/biblioteca/daos/EmprestimosDAO.java=UTF-8
 encoding//src/main/java/com/bairro/biblioteca/daos/FuncionariosDAO.java=UTF-8
+encoding//src/main/java/com/bairro/biblioteca/daos/LivrosDAO.java=UTF-8
+encoding//src/main/java/com/bairro/biblioteca/daos/UsuariosDAO.java=UTF-8
 encoding//src/main/java/com/bairro/biblioteca/resources/EmprestimosResource.java=UTF-8
 encoding//src/main/java/com/bairro/biblioteca/resources/FuncionariosResource.java=UTF-8

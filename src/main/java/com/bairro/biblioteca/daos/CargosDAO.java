@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.bairro.biblioteca.entidades.Cargos;
+import com.bairro.biblioteca.exceptions.ModelException;
 
 @Stateless
 public class CargosDAO {
@@ -29,7 +30,12 @@ public class CargosDAO {
 		return manager.createQuery("select c from Cargos c", Cargos.class).getResultList();
 	}
 
-	public Cargos salvar(Cargos cargo) {
+	public Cargos salvar(Cargos cargo) throws ModelException {
+
+		if (cargo.getTipo() == null) {
+			throw new ModelException("O tipo de cargo deve ser informado!");
+		}
+
 		manager.persist(cargo);
 		return cargo;
 	}
