@@ -36,7 +36,7 @@ public class EmprestimosResource {
 			Emprestimos generoAtualizado = dao.atualizar(emprestimo);
 			return Response.ok(generoAtualizado).status(202).build();
 		} catch (ModelException e) {
-			MensagemWrapper mensagem = new MensagemWrapper("Erro ao atualizar o empréstimo! " + e.getMessage());
+			MensagemWrapper mensagem = new MensagemWrapper("Erro ao atualizar o emprÃ©stimo! " + e.getMessage());
 			return Response.ok(mensagem).status(400).build();
 		}
 	}
@@ -50,7 +50,7 @@ public class EmprestimosResource {
 			MensagemWrapper mensagem = new MensagemWrapper("Emprestimo " + idEmprestimo + "deletado com sucesso!");
 			return Response.ok(mensagem).status(200).build();
 		} catch (ModelException e) {
-			MensagemWrapper mensagem = new MensagemWrapper("Não foi possível deletar o empréstimo! " + e.getMessage());
+			MensagemWrapper mensagem = new MensagemWrapper("NÃ£o foi possÃ­vel deletar o emprÃ©stimo! " + e.getMessage());
 			return Response.ok(mensagem).status(400).build();
 		}
 	}
@@ -78,7 +78,7 @@ public class EmprestimosResource {
 		SimpleDateFormat formatador = new SimpleDateFormat("yyyy-MM-dd");
 		Date dataDevolucao = new Date(dataDev);
 		String dataFormatada = "'" + formatador.format(dataDevolucao) + "'";
-		return dao.buscarPorPriedade("WHERE e.dataDevolucao = ", dataFormatada);
+		return dao.buscarPorPropriedade("WHERE e.dataDevolucao = ", dataFormatada);
 	}
 
 	@Path("/data_emprestimo/{dataLong}")
@@ -87,7 +87,7 @@ public class EmprestimosResource {
 		SimpleDateFormat formatador = new SimpleDateFormat("yyyy-MM-dd");
 		Date dataEmp = new Date(dataEmprestimo);
 		String dataFormatada = "'" + formatador.format(dataEmp) + "'";
-		return dao.buscarPorPriedade("WHERE e.dataEmprestimo = ", dataFormatada);
+		return dao.buscarPorPropriedade("WHERE e.dataEmprestimo = ", dataFormatada);
 	}
 
 	@GET
@@ -109,7 +109,7 @@ public class EmprestimosResource {
 			Emprestimos emprestimo = dao.buscarPorId(idEmprestimo);
 			return Response.ok(emprestimo).status(200).build();
 		} catch (ModelException e) {
-			MensagemWrapper mensagem = new MensagemWrapper("Erro ao buscar empréstimo! " + e.getMessage());
+			MensagemWrapper mensagem = new MensagemWrapper("Erro ao buscar emprÃ©stimo! " + e.getMessage());
 			return Response.ok(mensagem).status(400).build();
 		}
 	}
@@ -143,7 +143,7 @@ public class EmprestimosResource {
 			Emprestimos emprestimoSalvo = dao.salvar(emprestimo);
 			return Response.ok(emprestimoSalvo).status(201).build();
 		} catch (ModelException e) {
-			MensagemWrapper mensagem = new MensagemWrapper("Erro ao salvar o empréstimo! " + e.getMessage());
+			MensagemWrapper mensagem = new MensagemWrapper("Erro ao salvar o emprÃ©stimo! " + e.getMessage());
 			return Response.ok(mensagem).status(400).build();
 		}
 	}

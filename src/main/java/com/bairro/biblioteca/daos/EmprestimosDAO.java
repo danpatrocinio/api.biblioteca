@@ -34,7 +34,7 @@ public class EmprestimosDAO {
 	private UsuariosDAO usuarioDao;
 
 	public Emprestimos atualizar(Emprestimos emprestimo) throws ModelException {
-		buscarPorId(emprestimo.getIdEmprestimo()); // somente para validar se exite no banco, caso n„o exista dispara uma exception
+		buscarPorId(emprestimo.getIdEmprestimo()); // somente para validar se exite no banco, caso n√£o exista dispara uma exception
 
 		manager.merge(emprestimo);
 		return emprestimo;
@@ -43,13 +43,13 @@ public class EmprestimosDAO {
 	public Emprestimos buscarPorId(Integer idEmprestimo) throws ModelException {
 		Emprestimos emprestimo = manager.find(Emprestimos.class, idEmprestimo);
 		if (emprestimo == null) {
-			throw new ModelException("EmprÈstimo n„o encontrado!");
+			throw new ModelException("Empr√©stimo n√£o encontrado!");
 		}
 		return emprestimo;
 	}
 
 	/**
-	 * O mÈdoto buscar emprÈstimos por livro deve considerar as 3 possibilidades.
+	 * O m√©doto buscar empr√©stimos por livro deve considerar as 3 possibilidades.
 	 * 
 	 * @param idLivro
 	 * @return
@@ -59,13 +59,8 @@ public class EmprestimosDAO {
 		        + idLivro + " or e.idLivro3 = " + idLivro, Emprestimos.class).getResultList();
 	}
 
-	public List<Emprestimos> buscarPorPriedade(String where, Object parametro) {
-		//select e from Emprestimos e WHERE ?<campo que eu quero filtrar>? = ?<parametro>?
-		return manager.createQuery("select e from Emprestimos e " + where + parametro, Emprestimos.class)
-		        .getResultList();
-	}
-
 	public List<Emprestimos> buscarPorPropriedade(String whereClause, Object parametro) {
+		//select e from Emprestimos e WHERE ?<campo que eu quero filtrar>? = ?<parametro>?
 		return manager.createQuery("select e from Emprestimos e " + whereClause + parametro, Emprestimos.class)
 		        .getResultList();
 	}
@@ -76,14 +71,27 @@ public class EmprestimosDAO {
 		Funcionarios funcionarioEmprestimo = funcionariosDao.getById(emprestimo.getIdFuncionario());
 		Cargos cargoFuncionarioEmprestimo = cargosDao.buscarPorId(funcionarioEmprestimo.getIdCargo());
 		if (!"D".equals(cargoFuncionarioEmprestimo.getTipo())) {
-			throw new ModelException("Este funcion·rio n„o esta autorizado a deletar um emprÈstimo!");
+			throw new ModelException("Este funcion√°rio n√£o esta autorizado a deletar um empr√©stimo!");
 		}
 
 		manager.remove(emprestimo);
 	}
 
+	public boolean existeComPropriedade(String whereClause, Object parametro) {
+		if (quantidadeComPropriedade(whereClause, parametro) > 0) {
+			return true;
+		}
+		return false;
+	}
+
 	public List<Emprestimos> getAll() {
 		return manager.createQuery("select e from Emprestimos e", Emprestimos.class).getResultList();
+	}
+
+	public Long quantidadeComPropriedade(String whereClause, Object parametro) {
+		Object count = manager.createQuery("select COUNT(e.idEmprestimo) from Emprestimos e " + whereClause + parametro)
+		        .getSingleResult();
+		return count != null ? (Long) count : 0;
 	}
 
 	public Emprestimos salvar(Emprestimos emprestimo) throws ModelException {
@@ -95,7 +103,7 @@ public class EmprestimosDAO {
 		validaUsuarioInformado(emprestimo);
 
 		if (emprestimo.getDataEmprestimo() == null) {
-			throw new ModelException("A data de emprÈstimo n„o foi infomarda!");
+			throw new ModelException("A data de empr√©stimo n√£o foi informada!");
 		}
 
 		// Ajustar data de emprestimo;
@@ -117,7 +125,7 @@ public class EmprestimosDAO {
 	}
 
 	/**
-	 * Calculo do prazo para devoluÁ„o
+	 * Calculo do prazo para devolu√ß√£o
 	 * 
 	 * @param emprestimo
 	 * @return
@@ -137,7 +145,7 @@ public class EmprestimosDAO {
 	}
 
 	/**
-	 * Valida o funcion·rio informado, caso n„o seja v·lido ou n„o esteja informado dispara uma
+	 * Valida o funcion√°rio informado, caso n√£o seja v√°lido ou nÔøΩo esteja informado dispara uma
 	 * exception interrompendo o processo.
 	 * 
 	 * @param emprestimo
@@ -145,20 +153,20 @@ public class EmprestimosDAO {
 	 */
 	private void validaFuncionarioInformado(Emprestimos emprestimo) throws ModelException {
 		if (emprestimo.getIdFuncionario() == null || funcionariosDao.getById(emprestimo.getIdFuncionario()) == null) {
-			throw new ModelException("O funcion·rio n„o foi informado!");
+			throw new ModelException("O funcion√°rio n√£o foi informado!");
 		}
 		Funcionarios funcionarioEmprestimo = funcionariosDao.getById(emprestimo.getIdFuncionario());
 		Cargos cargo = cargosDao.buscarPorId(funcionarioEmprestimo.getIdCargo());
 		if (!TipoDeCargo.DIRETOR.getLetra().equals(cargo.getTipo())) {
 			if (!TipoDeCargo.BIBLIOTECARIO.getLetra().equals(cargo.getTipo())) {
-				throw new ModelException("Este funcion·rio n„o esta autorizado a efetuar emprÈstimos!");
+				throw new ModelException("Este funcion√°rio n√£o esta autorizado a efetuar empr√©stimos!");
 			}
 		}
 	}
 
 	/**
-	 * Valida os livros informados, caso n„o esteja informado pelo menos 01 ou seja informado um
-	 * cÛdigo de livro n„o cadastrado dispara uma exception interromendo o processo.
+	 * Valida os livros informados, caso n√£o esteja informado pelo menos 01 ou seja informado um
+	 * c√≥digo de livro n√£o cadastrado dispara uma exception interromendo o processo.
 	 * 
 	 * @param emprestimo
 	 * @throws ModelException
@@ -179,16 +187,15 @@ public class EmprestimosDAO {
 	}
 
 	/**
-	 * Valida se o usuario foi informado e se existe com o cÛdigo de usu·rio informado.
+	 * Valida se o usuario foi informado e se existe com o c√≥digo de usu√°rio informado.
 	 * 
 	 * @param emprestimo
 	 * @throws ModelException
 	 */
 	private void validaUsuarioInformado(Emprestimos emprestimo) throws ModelException {
 		if (emprestimo.getIdUsuario() == null) {
-			throw new ModelException("O usu·rio n„o foi informado!");
+			throw new ModelException("O usu√°rio n√£o foi informado!");
 		}
-		usuarioDao.buscarPorId(emprestimo.getIdUsuario()); // caso n„o encontre uma exception ser· disparada pelo mÈtodo buscarPorId de usuarioDao.
+		usuarioDao.buscarPorId(emprestimo.getIdUsuario()); // caso n√£o encontre uma exception ser√° disparada pelo m√©todo buscarPorId de usuarioDao.
 	}
-
 }

@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,8 +29,11 @@ public class Emprestimos {
 	@Column(name = "id_emprestimo")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idEmprestimo;
+
+	@JoinColumn(name = "id_funcionario", table = "funcionarios")
 	@Column(name = "id_funcionario")
 	private Integer idFuncionario;
+
 	@Column(name = "id_livro1")
 	private Integer idLivro1;
 	@Column(name = "id_livro2")

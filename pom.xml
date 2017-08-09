@@ -6,7 +6,10 @@
 	<packaging>war</packaging>
 	<name>apibiblioteca</name>
 	<description>API para gerênciamento de Biblioteca</description>
-
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
 	<dependencies>
 		<dependency>
 		    <groupId>javax</groupId>

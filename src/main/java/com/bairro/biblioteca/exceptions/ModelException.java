@@ -5,29 +5,29 @@ public class ModelException extends Exception {
 	private static final long serialVersionUID = 4049747126608813330L;
 
 	/**
-	 * Cria a exceção com a mensagem padrão da classe <code>Exeption</code>.
+	 * Cria a exception com a mensagem padrÃ£o da classe <code>Exeption</code>.
 	 */
 	public ModelException() {
 		super();
 	}
 
 	/**
-	 * Cria a exceção com a mensagem passada como parâmetro.
+	 * Cria a exception com a mensagem passada como parÃ¢metro.
 	 * 
 	 * @param mensagem
-	 *            Mensagem específica da exceção.
+	 *            Mensagem especÃ­fica da exception.
 	 */
 	public ModelException(String mensagem) {
 		super(mensagem);
 	}
 
 	/**
-	 * Cria a exceção com a mensagem e causa passadas por parâmetro.
+	 * Cria a exception com a mensagem e causa passadas por parÃ¢metro.
 	 * 
 	 * @param mensagem
-	 *            Mensagem específica da exceção.
+	 *            Mensagem especÃ­fica da exception.
 	 * @param causa
-	 *            Indica a exceção que gerou essa exceçao.
+	 *            Indica a causa que gerou essa exception.
 	 */
 	public ModelException(String mensagem, Throwable causa) {
 		super(mensagem, causa);

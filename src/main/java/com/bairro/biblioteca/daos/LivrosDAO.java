@@ -44,12 +44,16 @@ public class LivrosDAO {
 	}
 
 	public boolean existeComPropriedade(String whereClause, Object parametro) {
-		Livros livroEncontrado = manager.createQuery("select l from Livros l " + whereClause + parametro, Livros.class)
-		        .getSingleResult();
-		if (livroEncontrado != null) {
+		if (quantidadeComPropriedade(whereClause, parametro) > 0) {
 			return true;
 		}
 		return false;
+	}
+
+	public Long quantidadeComPropriedade(String whereClause, Object parametro) {
+		Object count = manager.createQuery("select COUNT(l.idLivro) from Livros l " + whereClause + parametro)
+		        .getSingleResult();
+		return count != null ? (Long) count : 0;
 	}
 
 	public Livros salvar(Livros livro) {
