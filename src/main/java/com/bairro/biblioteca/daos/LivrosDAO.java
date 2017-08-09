@@ -43,6 +43,14 @@ public class LivrosDAO {
 		}
 	}
 
+	/**
+	 * @param whereClause
+	 *            - WHERE <coluna> = <parametro>
+	 * @param parametro
+	 * @return Retorna TRUE caso exista mais que 0 (zero) registros encontrados de acordo com a
+	 *         cláusula e o parâmetro passado nos argumentos "whereClause" e "parametro"
+	 *         respectivamente. Utiliza sempre a primeira letra do nome da tabela como alias.
+	 */
 	public boolean existeComPropriedade(String whereClause, Object parametro) {
 		if (quantidadeComPropriedade(whereClause, parametro) > 0) {
 			return true;
@@ -50,10 +58,18 @@ public class LivrosDAO {
 		return false;
 	}
 
+	/**
+	 * @param whereClause
+	 *            - WHERE <coluna> = <parametro>
+	 * @param parametro
+	 * @return Retorna a quantidade de registros encontrados de acordo com a cláusula e o parâmetro
+	 *         passado nos argumentos "whereClause" e "parametro" respectivamente. Caso não encontre
+	 *         nenhum registro retorna 0 (zero). Utiliza sempre a primeira letra do nome da tabela
+	 *         como alias.
+	 */
 	public Long quantidadeComPropriedade(String whereClause, Object parametro) {
-		Object count = manager.createQuery("select COUNT(l.idLivro) from Livros l " + whereClause + parametro)
+		return (Long) manager.createQuery("select COUNT(l.idLivro) from Livros l " + whereClause + parametro)
 		        .getSingleResult();
-		return count != null ? (Long) count : 0;
 	}
 
 	public Livros salvar(Livros livro) {

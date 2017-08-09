@@ -77,6 +77,14 @@ public class EmprestimosDAO {
 		manager.remove(emprestimo);
 	}
 
+	/**
+	 * @param whereClause
+	 *            - WHERE <coluna> = <parametro>
+	 * @param parametro
+	 * @return Retorna TRUE caso exista mais que 0 (zero) registros encontrados de acordo com a
+	 *         cláusula e o parâmetro passado nos argumentos "whereClause" e "parametro"
+	 *         respectivamente. Utiliza sempre a primeira letra do nome da tabela como alias.
+	 */
 	public boolean existeComPropriedade(String whereClause, Object parametro) {
 		if (quantidadeComPropriedade(whereClause, parametro) > 0) {
 			return true;
@@ -88,10 +96,18 @@ public class EmprestimosDAO {
 		return manager.createQuery("select e from Emprestimos e", Emprestimos.class).getResultList();
 	}
 
+	/**
+	 * @param whereClause
+	 *            - WHERE <coluna> = <parametro>
+	 * @param parametro
+	 * @return Retorna a quantidade de registros encontrados de acordo com a cláusula e o parâmetro
+	 *         passado nos argumentos "whereClause" e "parametro" respectivamente. Caso não encontre
+	 *         nenhum registro retorna 0 (zero). Utiliza sempre a primeira letra do nome da tabela
+	 *         como alias.
+	 */
 	public Long quantidadeComPropriedade(String whereClause, Object parametro) {
-		Object count = manager.createQuery("select COUNT(e.idEmprestimo) from Emprestimos e " + whereClause + parametro)
+		return (Long) manager.createQuery("select COUNT(e.idEmprestimo) from Emprestimos e " + whereClause + parametro)
 		        .getSingleResult();
-		return count != null ? (Long) count : 0;
 	}
 
 	public Emprestimos salvar(Emprestimos emprestimo) throws ModelException {

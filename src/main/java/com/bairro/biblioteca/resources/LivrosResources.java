@@ -37,6 +37,7 @@ public class LivrosResources {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response buscarPorId(@PathParam("id") Integer idLivro) {
 		try {
+			dao.quantidadeComPropriedade("WHERE l.idLivro = ", idLivro);
 			Livros livro = dao.buscarPorId(idLivro);
 			return Response.ok(livro).build();
 		} catch (ModelException e) {
