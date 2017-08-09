@@ -17,6 +17,7 @@ public class Cargos {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_cargo")
 	private Integer idCargo;
+	private String tipo;
 
 	public String getAtribuicoes() {
 		return atribuicoes;
@@ -30,6 +31,10 @@ public class Cargos {
 		return idCargo;
 	}
 
+	public String getTipo() {
+		return tipo;
+	}
+
 	public void setAtribuicoes(String atribuicoes) {
 		this.atribuicoes = atribuicoes;
 	}
@@ -40,6 +45,10 @@ public class Cargos {
 
 	public void setIdCargo(Integer idCargo) {
 		this.idCargo = idCargo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 
 }
