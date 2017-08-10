@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
+encoding//src/main/java=UTF-8
 encoding//src/main/java/com/bairro/biblioteca/daos/EmprestimosDAO.java=UTF-8
 encoding//src/main/java/com/bairro/biblioteca/daos/FuncionariosDAO.java=UTF-8
 encoding//src/main/java/com/bairro/biblioteca/daos/LivrosDAO.java=UTF-8
@@ -7,3 +8,6 @@ encoding//src/main/java/com/bairro/biblioteca/enums/TipoDeCargo.java=UTF-8
 encoding//src/main/java/com/bairro/biblioteca/exceptions/ModelException.java=UTF-8
 encoding//src/main/java/com/bairro/biblioteca/resources/EmprestimosResource.java=UTF-8
 encoding//src/main/java/com/bairro/biblioteca/resources/FuncionariosResource.java=UTF-8
+encoding//src/main/resources=UTF-8
+encoding/<project>=UTF-8
+encoding/pom.xml=UTF-8
