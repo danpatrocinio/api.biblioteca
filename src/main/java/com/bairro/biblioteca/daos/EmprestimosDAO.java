@@ -122,15 +122,10 @@ public class EmprestimosDAO {
 			throw new ModelException("A data de empréstimo não foi informada!");
 		}
 
-		// Ajustar data de emprestimo;
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(emprestimo.getDataEmprestimo()); // converte para o calendário para poder realizar operações em dia, mês ou ano.
-		cal.set(Calendar.DATE, cal.get(Calendar.DATE) + 1); // para gravar corretamente esta sendo necessario somar + 1 ao dia.
-		Date dateEmprestimoAjustada = new Date(cal.getTimeInMillis()); // converte para java.util.Date para gravar no banco.
-		emprestimo.setDataEmprestimo(dateEmprestimoAjustada);
-
 		int prazoEmDias = calculaPrazoParaDevolucao(emprestimo);
-		cal.set(Calendar.DATE, cal.get(Calendar.DATE) + 1 + prazoEmDias); // para gravar corretamente esta sendo necessario somar + 1 ao dia.
+		cal.set(Calendar.DATE, cal.get(Calendar.DATE) + prazoEmDias);
 		Date datePrevisaoDevolucao = new Date(cal.getTimeInMillis());// converte para java.util.Date para gravar no banco.
 		emprestimo.setDataPrevisaoDevolucao(datePrevisaoDevolucao);
 

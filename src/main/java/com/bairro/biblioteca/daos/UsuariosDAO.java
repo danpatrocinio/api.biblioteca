@@ -1,5 +1,7 @@
 package com.bairro.biblioteca.daos;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -21,4 +23,12 @@ public class UsuariosDAO {
 		return usuario;
 	}
 
+	public Usuarios salvar(Usuarios usuario) {
+		manager.persist(usuario);
+		return usuario;
+	}
+	
+	public List<Usuarios> getAll(){
+		return manager.createQuery("select u from Usuarios u", Usuarios.class).getResultList();
+	}
 }
